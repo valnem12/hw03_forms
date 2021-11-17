@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+  <div class="container py-5">
+    <div class="row">
+      <aside class="col-12 col-md-3">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            Дата публикации: {{ text_by_id.pub_date|date:'d E Y' }}
+          </li>
+          <li class="list-group-item">
+            {% if post.group.title %}
+              Группа: {{ text_by_id.group.title }}
+              <a href="{% url 'posts:group_list' text_by_id.group.slug %}">
+                все записи группы
+              </a>
+            {% else %}
+              <strong style="color:#800000">Пост не относиться ни к одной группе  </strong>
+            {% endif %}  
+          </li>
+          <li class="list-group-item">
+            Автор: {{ text_by_id.author.get_full_name|default:text_by_id.author }}
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Всего постов автора: {{ post_count }}
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'posts:profile' text_by_id.author %}">
+              все посты пользователя
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <article class="col-12 col-md-9">
+        <p>
+          {{ text_by_id.text }}
+        </p>
+        {% if text_by_id.author|safe == request.user.username|safe %}          
+          <a class="btn btn-primary" href="{% url 'posts:post_edit' text_by_id.id %}">
+            редактировать запись
+            {{ request.user.username|safe }} 
+          </a><br/> 
+        {% endif %}  
+        {% if messages %}
+          <class="messages">
+              {% for message in messages %}                
+                {% if message.tags %} <class="{{ message.tags }}"{% endif %}>{{ message }}
+              {% endfor %}
+           {% endif %}  
+      </article>      
+    </div>
+  </div>
+</main>
+{% endblock %}

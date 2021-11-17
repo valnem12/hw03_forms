@@ -1,0 +1,10 @@
+{% url 'posts:index' as page_url1 %}
+
+{% if request.path == page_url1 %}
+  <li>
+    Автор: {{ post.author.get_full_name|default:post.author }}
+    <a href='{% url 'posts:profile' post.author.username %}'>
+      все посты пользователя
+    </a>
+  </li>
+{% endif %}  

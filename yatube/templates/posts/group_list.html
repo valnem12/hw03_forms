@@ -1,0 +1,25 @@
+<!--Group posts filtered by group-->
+
+{% extends 'base.html' %}
+
+{% block tab_title %}
+  Записи сообщества {{ group.title }}
+{% endblock %}
+
+
+{% block header %}
+  {{ group.title|safe }} 
+{% endblock %}
+
+{% block title %}
+  {{ group.description }}
+{% endblock %}
+
+{% block content %}
+
+  {% for post in page_obj %}
+    {% include 'includes/post_item.html' %}
+    {% include 'includes/post_break_line.html' %}
+  {% endfor %}
+  {% include 'includes/paginator.html' %}
+{% endblock %}

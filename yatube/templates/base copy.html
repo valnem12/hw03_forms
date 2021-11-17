@@ -1,0 +1,59 @@
+<!--Main html that uses in all pages-->
+
+<!DOCTYPE html> <!-- Используется html 5 версии -->
+<html lang="ru">
+<!-- Язык сайта - русский -->
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+<head>
+  <meta charset="utf-8"> <!-- Кодировка сайта -->
+  <!-- Сайт готов работать с мобильными устройствами -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Загружаем фав-иконки -->
+
+  <link rel="icon" href={% static "img/fav/favicon.ico" %} type="image">
+  <link rel="apple-touch-icon" sizes="180x180" href={% static "img/fav/apple-touch-icon.png" %}>
+  <link rel="icon" type="image/png" sizes="32x32" href={% static "img/fav/favicon-32x32.png" %}>
+  <link rel="icon" type="image/png" sizes="16x16" href={% static "img/fav/favicon-16x16.png" %}>
+  <meta name="msapplication-TileColor" content="#000">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<header>
+  {% include 'includes/header.html' %}
+</header>
+
+<body>
+  <main>
+    <div class="container">
+
+      {% block title %}
+        <h1>Последние обновления на сайте</h1>
+      {% endblock %} 
+
+      {% block content %}     
+        <article>
+          <ul>
+            <li>
+              {% block content1 %}Автор: {{post.author.get_full_name }}{% endblock %}
+            </li>
+            <li>
+              <p style="color:gray">
+                {% block content2 %}Дата публикации: {{ post.pub_date|date:'d E Y' }}{% endblock %}
+              </p>
+            </li>
+          </ul>
+          <p>
+            {% block content3 %}{% endblock %}
+          </p>
+        </article>       
+      {% endblock %}
+    </div>
+  </main>
+
+  <footer>
+    {% include 'includes/footer.html' %}
+  </footer>
+</body>

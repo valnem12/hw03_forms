@@ -1,0 +1,13 @@
+
+<!--Repeated Article Elements-->
+
+<article>
+  <ul>       
+      {% include 'includes/detailed_info_url.html'%}    
+    <li>
+      Дата публикации: {{ post.pub_date|date:'d E Y' }}
+    </li>
+  </ul>
+  <p>{{ post.text|linebreaksbr }}</p>
+</article>
+
