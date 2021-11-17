@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator, Page
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -17,13 +17,12 @@ def _pagination(request, selector, count):
     return paginator.get_page(page_number)
 
 
-# @login_required(redirect_field_name=None)
 def index(request):
     """Main page - dispalying the latest ten posts."""
 
     template = 'posts/index.html'
     posts = Post.objects.all()
-    page_obj = _pagination(request, posts, 10) 
+    page_obj = _pagination(request, posts, 10)
     context = {
         'posts': posts,
         'page_obj': page_obj
@@ -31,7 +30,6 @@ def index(request):
     return render(request, template, context)
 
 
-#@login_required(redirect_field_name=None)
 def group_posts(request, slug):
     """Filters by group and displays posts by ten per page."""
 
@@ -39,7 +37,7 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts_by_group = (group
                       .posts
-                      .all())                
+                      .all())
     context = {
         'group': group,
         'posts_by_group': posts_by_group,
@@ -48,7 +46,6 @@ def group_posts(request, slug):
     return render(request, template, context)
 
 
-#@login_required(redirect_field_name=None)
 def profile(request, username):
     """Filters by author and displays posts by ten per page."""
 
@@ -65,7 +62,6 @@ def profile(request, username):
     return render(request, template, context)
 
 
-#@login_required(redirect_field_name=None)
 def post_detail(request, post_id):
     """Filters by author and displays posts by ten per page."""
 
@@ -83,7 +79,7 @@ def post_create(request):
     form = PostForm(request.POST or None)
     if form.is_valid():
         form.cleaned_data['text']
-        #form.cleaned_data['group']
+        form.cleaned_data['group']
         post = form.save(commit=False)
         post.author = request.user
         post.save()
