@@ -26,4 +26,3 @@ class SignUp(CreateView):
             login(self.request, user)
             return HttpResponseRedirect(self.get_success_url())
         return HttpResponseRedirect(reverse(LOGOUT_URL))
-
