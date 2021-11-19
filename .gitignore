@@ -140,6 +140,8 @@ dmypy.json
 .vscode/
 *.code-workspace
 
+/home/val/Dev/hw03_forms/yatube/templates/posts/post_create1.html
+
 # Local History for Visual Studio Code
 .history/
 

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 
   <div class="container py-5">
@@ -15,7 +16,8 @@
                 все записи группы
               </a>
             {% else %}
-              <strong style="color:#800000">Пост не относиться ни к одной группе  </strong>
+              <link rel="stylesheet" href="{% static 'css/color_red.css' %}">
+              <strong>Пост не относится ни к одной группе</strong>
             {% endif %}  
           </li>
           <li class="list-group-item">

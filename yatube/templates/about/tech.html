@@ -1,11 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 {% block header %}Технологии{% endblock %}
+
 {% block content %}
 {% comment %} Колонки с отступом сверху и снизу {% endcomment %}
 <div class="row">
     <h1>
         <p>Вот что я умею</p>
-        <p> {{ just_title }} </p>
+        <link rel="stylesheet" href="{% static 'css/color_red.css' %}">
+        <line><p>А ничего не умею</p></line>
     </h1>
     <aside class="col-12 col-md-3">
         <ul class="list-group list-group-flush">
@@ -29,7 +32,6 @@
             Займет всю ширину блока на мобильном<br>
             и 25% при размерах экрана ≥768px
             <br />
-        <p> {{ just_text }} </p>
     </article>
 </div>
 {% endblock %}
