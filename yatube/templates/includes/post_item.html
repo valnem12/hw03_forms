@@ -2,8 +2,11 @@
 <!--Repeated Article Elements-->
 
 <article>
-  <ul>       
-      {% include 'includes/detailed_info_url.html'%}    
+  <ul>  
+    {% url 'posts:index' as homepage %}
+    {% if request.path == homepage %}     
+      {% include 'includes/author_posts_url.html'%}  
+    {% endif %}      
     <li>
       Дата публикации: {{ post.pub_date|date:'d E Y' }}
     </li>

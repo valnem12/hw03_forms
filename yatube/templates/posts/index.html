@@ -14,9 +14,7 @@
 <!-- Blog Entries Column -->
   {% for post in page_obj %}
     {% include 'includes/post_item.html' %}
-    <a href='{% url 'posts:post_detail' post.id %}'>
-      подробная информация
-    </a><br/>
+    {% include 'includes/detailed_info_url.html' %}
 
     {% if post.group %}
       <a href='{% url 'posts:group_list' post.group.slug %}'>

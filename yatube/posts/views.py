@@ -5,13 +5,14 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 
 from .models import Post, Group
-from users.forms import PostForm
+from .forms import PostForm
+from yatube.settings import POSTS_PER_PAGE
 
 
 User = get_user_model()
 
 
-def _pagination(request, selector, count):
+def _pagination(request, selector, count=POSTS_PER_PAGE):
     paginator = Paginator(selector, count)
     page_number = request.GET.get('page')
     return paginator.get_page(page_number)
@@ -22,9 +23,8 @@ def index(request):
 
     template = 'posts/index.html'
     posts = Post.objects.all()
-    page_obj = _pagination(request, posts, 10)
+    page_obj = _pagination(request, posts)
     context = {
-        'posts': posts,
         'page_obj': page_obj
     }
     return render(request, template, context)
@@ -35,13 +35,10 @@ def group_posts(request, slug):
 
     template = 'posts/group_list.html'
     group = get_object_or_404(Group, slug=slug)
-    posts_by_group = (group
-                      .posts
-                      .all())
+    posts_by_group = group.posts.all()
     context = {
         'group': group,
-        'posts_by_group': posts_by_group,
-        'page_obj': _pagination(request, posts_by_group, 10),
+        'page_obj': _pagination(request, posts_by_group),
     }
     return render(request, template, context)
 
@@ -51,13 +48,10 @@ def profile(request, username):
 
     template = 'posts/profile.html'
     author = get_object_or_404(User, username=username)
-    posts_by_author = (author
-                       .posts
-                       .filter(author=author)
-                       )
+    posts_by_author = author.posts.all()
     context = {
         'author': author,
-        'page_obj': _pagination(request, posts_by_author, 10),
+        'page_obj': _pagination(request, posts_by_author),
     }
     return render(request, template, context)
 
@@ -66,10 +60,10 @@ def post_detail(request, post_id):
     """Filters by author and displays posts by ten per page."""
 
     template = 'posts/post_detail.html'
-    text_by_id = get_object_or_404(Post, pk=post_id)
+    post_by_text_id = get_object_or_404(Post, pk=post_id)
     context = {
-        'text_by_id': text_by_id,
-        'post_count': text_by_id.author.posts.count
+        'post_by_text_id': post_by_text_id,
+        'post_count': post_by_text_id.author.posts.count()
     }
     return render(request, template, context)
 
@@ -78,12 +72,10 @@ def post_detail(request, post_id):
 def post_create(request):
     form = PostForm(request.POST or None)
     if form.is_valid():
-        form.cleaned_data['text']
-        form.cleaned_data['group']
         post = form.save(commit=False)
         post.author = request.user
         post.save()
-        return redirect('posts:profile', username=post.author)
+        return redirect('posts:profile', username=request.user)
     return render(request, 'posts/post_create.html', {'form': form})
 
 
@@ -91,18 +83,15 @@ def post_create(request):
 def post_edit(request, post_id):
 
     post = get_object_or_404(Post, pk=post_id)
-    form = PostForm(request.POST or None, initial={'text': post.text})
-    is_edit = True
+    form = PostForm(request.POST or None, instance=post)
     if post.author != request.user:
-        messages.warning(request, 'You can\'t modify others posts')
         return redirect('posts:post_detail', post_id)
     if form.is_valid():
-        post.text = form['text'].value()
-        post.save()
+        form.save()
         return redirect('posts:post_detail', post_id)
     return render(request,
                   'posts/post_create.html',
                   {'form': form,
-                   'is_edit': is_edit,
+                   'is_edit': True,
                    'post_id': post_id}
                   )

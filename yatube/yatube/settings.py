@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.year.year',
             ],
         },
     },
@@ -135,3 +136,5 @@ LOGIN_REDIRECT_URL = 'posts:index'
 LOGOUT_URL = 'users:logout'
 
 EMPTY_VALUE_DISPLAY = '-пусто-'
+
+POSTS_PER_PAGE = 10

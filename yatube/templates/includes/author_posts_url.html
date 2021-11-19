@@ -1,0 +1,6 @@
+<li>
+  Автор: {{ post.author.get_full_name|default:post.author.username }}
+  <a href='{% url 'posts:profile' post.author.username %}'>
+    все посты пользователя
+  </a>
+</li>
