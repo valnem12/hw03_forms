@@ -24,7 +24,7 @@ SECRET_KEY = '3tb(i-w&v0sc7$&24$&7peec&kd5e^#klh%_!j(foy7@sg58*m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
 
 # Application definition
 

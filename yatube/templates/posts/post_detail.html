@@ -10,13 +10,13 @@
             Дата публикации: {{ post_by_text_id.pub_date|date:'d E Y' }}
           </li>
           <li class="list-group-item">
-            {% if post.group.title %}
-              Группа: {{ post_by_text_id.group.title }}
+          <link rel="stylesheet" href="{% static 'css/color_red.css' %}">
+            {% if post_by_text_id.group.title %}
+              Группа: <strong>{{ post_by_text_id.group.title|upper }}</strong>
               <a href="{% url 'posts:group_list' post_by_text_id.group.slug %}">
                 все записи группы
               </a>
-            {% else %}
-              <link rel="stylesheet" href="{% static 'css/color_red.css' %}">
+            {% else %}              
               <strong>Пост не относится ни к одной группе</strong>
             {% endif %}  
           </li>
