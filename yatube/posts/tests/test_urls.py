@@ -1,4 +1,3 @@
-# posts/tests/test_urls.py
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 

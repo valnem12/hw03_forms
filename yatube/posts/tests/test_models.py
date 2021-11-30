@@ -1,10 +1,6 @@
 from django.test import TestCase
-from django.contrib.auth import get_user_model
 
-from posts.models import Post, Group
-
-
-User = get_user_model()
+from posts.models import Post, Group, User
 
 
 class PostModelTest(TestCase):
@@ -22,33 +18,23 @@ class PostModelTest(TestCase):
             description='Тестовый group для теста',
         )
 
-    def object(self):
-        return PostModelTest.post
-
     def correct_object_name(self, text):
-        self.assertEqual(str(text), text)
+        self.assertIsInstance(text, str)
 
-    def forms_check(self, dict, flag='help_text'):
+    def forms_check(self, dict, field_text):
         for value, expected in dict.items():
             with self.subTest(value=value):
-                if flag == 'name':
-                    self.assertEqual(
-                        self.object()
-                        ._meta.get_field(value).verbose_name, expected)
-                else:
-                    self.assertEqual(
-                        self.object()
-                        ._meta.get_field(value).help_text, expected)
+                obj_attr = getattr(self.post._meta.get_field(value),
+                                   field_text)
+                self.assertEqual(obj_attr, expected)
 
-    def test_models_have_correct_object_names(self):
+    def test_post_name_is_string(self):
         """Проверяем, что у моделей корректно работает __str__."""
-        text = self.object().text
-        self.correct_object_name(text[:15])
-        self.assertEqual(str(text[:15]), text[:15])
+        self.correct_object_name(self.post.text[:15])
 
-        task_group = PostModelTest.group
-        title = task_group.title
-        self.correct_object_name(title)
+    def test_group_name_is_string(self):
+        """Проверяем, что у моделей корректно работает __str__."""
+        self.correct_object_name(self.group.title)
 
     def test_verbose_name(self):
         """verbose_name в полях совпадает с ожидаемым."""
@@ -56,7 +42,7 @@ class PostModelTest(TestCase):
             'author': 'Автор',
             'group': 'Группа',
         }
-        self.forms_check(field_verboses, 'name')
+        self.forms_check(field_verboses, 'verbose_name')
 
     def test_help_text(self):
         """verbose_name в полях совпадает с ожидаемым."""
@@ -64,4 +50,4 @@ class PostModelTest(TestCase):
             'text': 'Введите текст поста',
             'group': 'Выберите группу',
         }
-        self.forms_check(field_help_text, )
+        self.forms_check(field_help_text, 'help_text')
